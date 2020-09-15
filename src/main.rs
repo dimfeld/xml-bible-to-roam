@@ -122,7 +122,7 @@ fn main() -> Result<(), Error> {
         title: format!("{} {}", config.book, expected_chapter),
         children: vec![
             RoamBlock {
-                string: format!("Bible Book:: {}", config.book),
+                string: format!("Bible Book:: [[{}]]", config.book),
                 heading: None,
                 children: None,
             },
