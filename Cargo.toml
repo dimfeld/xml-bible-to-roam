@@ -1,0 +1,13 @@
+[package]
+authors = ["Daniel Imfeld <daniel@imfeld.dev>"]
+edition = "2018"
+name = "xml-bible-to-roam"
+version = "0.1.0"
+
+[dependencies]
+quick-xml = "0.18.1"
+snafu = "0.6.8"
+structopt = "0.3.17"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.57"
+
