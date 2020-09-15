@@ -2,6 +2,7 @@ use quick_xml::events::Event;
 use quick_xml::Reader;
 use serde::Serialize;
 use snafu::{ResultExt, Snafu};
+use std::io::Write;
 use structopt::StructOpt;
 
 #[derive(Debug, Snafu)]
@@ -14,6 +15,9 @@ enum Error {
 
     #[snafu(display("Writing output: {}", source))]
     WriteJSON { source: serde_json::Error },
+
+    #[snafu(display("Output Error: {}", source))]
+    IOError { source: std::io::Error },
 }
 
 #[derive(Debug, StructOpt)]
@@ -107,6 +111,18 @@ fn main() -> Result<(), Error> {
             Err(e) => return Err(Error::ParseError { source: e }),
             _ => (),
         }
+    }
+
+    if verses.len() == 0 {
+        let stderr = std::io::stderr();
+        let mut handle = stderr.lock();
+        writeln!(
+            handle,
+            "No verses found for {} {}",
+            config.book, expected_chapter
+        )
+        .context(IOError)?;
+        return Ok(());
     }
 
     let verse_blocks = verses
